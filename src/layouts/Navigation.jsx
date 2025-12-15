@@ -15,7 +15,7 @@ export function Navigation() {
           <Input 
             type="text" 
             placeholder="Search" 
-            className="h-8"
+            className="h-8 bg-white"
           />
           <Button 
             type="submit" 
