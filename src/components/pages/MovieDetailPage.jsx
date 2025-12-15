@@ -27,7 +27,7 @@ const ReviewCard = ({ review }) => {
         </div>
         
         {review.rate > 0 && (
-          <div className="flex items-center gap-1 bg-gray-900 px-2 py-1 rounded text-yellow-500 text-xs font-bold border border-gray-700">
+          <div className="flex items-center gap-1 bg-gray-800 px-2 py-1 rounded text-yellow-500 text-xs font-bold border border-gray-700">
             <Star size={12} fill="currentColor" />
             {review.rate}
           </div>
@@ -164,7 +164,7 @@ const MovieDetailPage = () => {
               </div>
             </div>
 
-            <div className="mb-8 p-6 bg-gray-800 rounded-2xl border border-gray-700">
+            <div className="mb-8 p-6 bg-gray-700 rounded-2xl border border-gray-700">
               <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
                 Nội dung phim
               </h3>
@@ -174,17 +174,17 @@ const MovieDetailPage = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-               <div className="p-4 bg-gray-800 rounded-xl border border-gray-700">
+               <div className="p-4 bg-gray-700 rounded-xl border border-gray-700">
                   <span className="text-gray-400 text-xs uppercase tracking-wider block mb-1">Đạo diễn</span>
                   <div className="font-semibold text-white truncate">
                     {movie.directors?.map(d => d.name).join(', ') || 'N/A'}
                   </div>
                </div>
-               <div className="p-4 bg-gray-800 rounded-xl border border-gray-700">
+               <div className="p-4 bg-gray-700 rounded-xl border border-gray-700">
                   <span className="text-gray-400 text-xs uppercase tracking-wider block mb-1">Quốc gia</span>
                   <div className="font-semibold text-white">United States</div>
                </div>
-               <div className="p-4 bg-gray-800 rounded-xl border border-gray-700">
+               <div className="p-4 bg-gray-700 rounded-xl border border-gray-700">
                   <span className="text-gray-400 text-xs uppercase tracking-wider block mb-1">Doanh thu</span>
                   <div className="font-semibold text-green-400">
                     {movie.box_office?.cumulative_worldwide_gross || movie.box_office?.budget || 'N/A'}
@@ -199,7 +199,7 @@ const MovieDetailPage = () => {
               
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 {movie.actors?.slice(0, 8).map(actor => (
-                  <div key={actor.id} className="flex items-center gap-3 bg-gray-800 p-3 rounded-xl border border-gray-700 hover:border-gray-500 transition group cursor-default">
+                  <div key={actor.id} className="flex items-center gap-3 bg-gray-700 p-3 rounded-xl border border-gray-700 hover:border-gray-500 transition group cursor-default">
                     <img 
                       src={actor.image} 
                       className="w-12 h-12 rounded-full object-cover border border-gray-600 group-hover:border-white transition"
