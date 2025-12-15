@@ -3,10 +3,6 @@ export const API_CONFIG = {
   DEFAULT_TOKEN: import.meta.env.VITE_APP_TOKEN,
 };
 
-if (!API_CONFIG.TOKEN) {
-  console.error("VITE_APP_TOKEN chưa được tìm thấy.");
-}
-
 export const endpoints = {
   getFivePopularMovies: `${API_CONFIG.BASE_URL}/movies/most-popular?page=1&limit=5`,
   getPopularMovies: `${API_CONFIG.BASE_URL}/movies/most-popular?page=1&limit=20`,

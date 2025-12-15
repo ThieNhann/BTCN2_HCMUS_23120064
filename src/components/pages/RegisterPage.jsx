@@ -38,7 +38,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0f1014] px-4 py-10">
+    <div className="min-h-screen flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-lg bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-700">
         <h2 className="text-3xl font-bold text-white mb-6 text-center flex justify-center items-center gap-2">
           <UserPlus className="text-blue-500" /> Đăng ký

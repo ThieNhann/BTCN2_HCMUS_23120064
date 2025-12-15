@@ -28,14 +28,14 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0f1014] px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-700">
         <h2 className="text-3xl font-bold text-white mb-6 text-center flex justify-center items-center gap-2">
-          <LogIn className="text-red-500" /> Đăng nhập
+          <LogIn className="text-blue-500" /> Đăng nhập
         </h2>
 
         {error && (
-          <div className="bg-red-500/20 border border-red-500 text-red-200 p-3 rounded-lg mb-4 text-sm text-center">
+          <div className="bg-blue-500/20 border border-blue-500 text-white p-3 rounded-lg mb-4 text-sm text-center">
             {error}
           </div>
         )}
@@ -67,7 +67,7 @@ const LoginPage = () => {
           <button 
             type="submit" 
             disabled={isLoading}
-            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition disabled:opacity-50"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition disabled:opacity-50"
           >
             {isLoading ? 'Đang xử lý...' : 'Đăng nhập'}
           </button>
@@ -75,7 +75,7 @@ const LoginPage = () => {
 
         <p className="mt-6 text-center text-gray-400 text-sm">
           Chưa có tài khoản?{' '}
-          <Link to="/register" className="text-red-400 hover:text-red-300 font-semibold hover:underline">
+          <Link to="/register" className="text-blue-400 hover:text-blue-300 font-semibold hover:underline">
             Đăng ký ngay
           </Link>
         </p>
