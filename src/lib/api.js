@@ -28,7 +28,7 @@ export const getSearchUrl = (keyword, type = 'q', page = 1) => {
   if (type === 'person') {
     params.append('person', keyword); // Tìm theo diễn viên/đạo diễn
   } else {
-    params.append('q', keyword);      // Tìm tổng hợp (mặc định)
+    params.append('q', keyword);
   }
   
   return `${endpoints.search}?${params.toString()}`;
@@ -40,7 +40,7 @@ export const fetchWithAuth = async (url, options = {}) => {
   // Lấy token của người dùng từ LocalStorage
   const userToken = localStorage.getItem('accessToken');
   
-  // Quyết định dùng token nào: Ưu tiên User Token > Default Token
+  // ưu tiên User Token > Default Token
   const tokenToUse = userToken || API_CONFIG.DEFAULT_TOKEN;
 
   const defaultHeaders = {
