@@ -44,12 +44,10 @@ const SearchPage = () => {
       try {
         setLoading(true);
         const url = getSearchUrl(query);
-        console.log("Fetching:", url);
         
         const response = await fetchWithAuth(url);
         setMovies(response.data || []); 
       } catch (error) {
-        console.error("Search Error:", error);
         setMovies([]);
       } finally {
         setLoading(false);
@@ -64,7 +62,7 @@ const SearchPage = () => {
   };
 
   return (
-    <div className="min-h-screen pt-8 pb-10 px-4 md:px-8 bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen pt-8 pb-10 px-4 md:px-8 ">
       
       {query && (
         <div className="mb-6 max-w-5xl mx-auto">

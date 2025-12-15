@@ -1,10 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Star, Clock, Calendar, Play, Users, Film } from 'lucide-react';
+import { ArrowLeft, Star, Clock, Calendar, Play } from 'lucide-react';
 import { fetchWithAuth, getMovieDetailUrl } from '@/lib/api';
 
 const FALLBACK_POSTER = "https://placehold.co/400x600/1a1a1a/FFF?text=No+Poster";
 const FALLBACK_AVATAR = "https://placehold.co/100x100/333/FFF?text=User";
+
+const ReviewCard = ({ review }) => {
+
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    return new Date(dateString).toLocaleDateString('vi-VN');
+  };
+
+  return (
+    <div className="bg-gray-700 p-5 rounded-xl border border-gray-700 flex flex-col h-full">
+      <div className="flex justify-between items-start mb-3">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-xs font-bold text-white uppercase">
+            {review.username?.charAt(0) || "U"}
+          </div>
+          <div>
+            <div className="font-bold text-white text-sm">{review.username}</div>
+            <div className="text-xs text-gray-400">{formatDate(review.date)}</div>
+          </div>
+        </div>
+        
+        {review.rate > 0 && (
+          <div className="flex items-center gap-1 bg-gray-900 px-2 py-1 rounded text-yellow-500 text-xs font-bold border border-gray-700">
+            <Star size={12} fill="currentColor" />
+            {review.rate}
+          </div>
+        )}
+      </div>
+
+      {review.title && <h4 className="font-bold text-gray-200 text-sm mb-2">{review.title}</h4>}
+
+      <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">
+        {review.content}
+      </p>
+    </div>
+  );
+};
 
 const MovieDetailPage = () => {
   const { id } = useParams();
@@ -27,7 +64,6 @@ const MovieDetailPage = () => {
         
         if (data) {
           data.image = getValidUrl(data.image, FALLBACK_POSTER);
-          
           if (data.actors && Array.isArray(data.actors)) {
             data.actors = data.actors.map(actor => ({
               ...actor,
@@ -60,13 +96,13 @@ const MovieDetailPage = () => {
   );
 
   return (
-    <div className="min-h-screen rounded-2xl text-gray-100 pb-20 font-sans bg-[#0f1014]">
+    <div className="min-h-screen rounded-2xl text-gray-100 pb-20 font-sans bg-gray-400 dark:bg-gray-600">
       <div className="container mx-auto px-4 py-6">
         <button 
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+          className="flex items-center gap-2 text-white hover:text-gray-200 transition-colors"
         >
-          <ArrowLeft size={20} />
+          <ArrowLeft size={20} className='text-white' />
           <span>Quay lại</span>
         </button>
       </div>
@@ -104,7 +140,7 @@ const MovieDetailPage = () => {
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-700">
                   <Star size={18} className="text-yellow-500" fill="currentColor" />
                   <span className="text-white font-bold text-lg">
-                    {movie.ratings?.imDb ? Number(movie.ratings.imDb).toFixed(1) : "N/A"}
+                    {movie.ratings?.imDb ? Number(movie.ratings.imDb).toFixed(1) : (movie.rate || "N/A")}
                   </span>
                 </div>
 
@@ -130,7 +166,6 @@ const MovieDetailPage = () => {
 
             <div className="mb-8 p-6 bg-gray-800 rounded-2xl border border-gray-700">
               <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-                <Film size={20} className="text-red-500" />
                 Nội dung phim
               </h3>
               <p className="text-gray-300 leading-relaxed text-base">
@@ -157,9 +192,8 @@ const MovieDetailPage = () => {
                </div>
             </div>
 
-            <div>
+            <div className="mb-8">
               <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <Users size={20} className="text-blue-500" />
                 Diễn viên
               </h3>
               
@@ -184,6 +218,24 @@ const MovieDetailPage = () => {
               </div>
               {(!movie.actors || movie.actors.length === 0) && (
                  <p className="text-gray-500 italic">Chưa có thông tin diễn viên.</p>
+              )}
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                Đánh giá ({movie.reviews ? movie.reviews.length : 0})
+              </h3>
+
+              {movie.reviews && movie.reviews.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {movie.reviews.map((review, index) => (
+                    <ReviewCard key={review.id || index} review={review} />
+                  ))}
+                </div>
+              ) : (
+                <div className="p-6 bg-gray-800/50 rounded-xl border border-gray-700 border-dashed text-center text-gray-500 italic">
+                  Chưa có đánh giá nào cho bộ phim này.
+                </div>
               )}
             </div>
 
