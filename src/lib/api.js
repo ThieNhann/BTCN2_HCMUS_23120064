@@ -4,7 +4,7 @@ export const API_CONFIG = {
 };
 
 if (!API_CONFIG.TOKEN) {
-  console.error("⛔VITE_APP_TOKEN chưa được tìm thấy.");
+  console.error("VITE_APP_TOKEN chưa được tìm thấy.");
 }
 
 export const endpoints = {
@@ -20,7 +20,6 @@ export const fetchWithAuth = async (url) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        // Header bắt buộc theo API của anh
         'x-app-token': API_CONFIG.TOKEN, 
       },
     });
