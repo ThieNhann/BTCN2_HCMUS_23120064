@@ -15,8 +15,11 @@ const HomePage = () => {
           title="Most popular"
           fetchUrl={endpoints.getPopularMovies}
         />
-        <div className="h-40 border-2 border-dashed border-gray-400 flex items-center justify-center text-gray-500">
-          Chỗ này để Carousel Top Rated (20 phim)
+      <div className="container mx-auto px-4 mt-10 space-y-8">          
+        <Carousel
+            title="Top rating"
+            fetchUrl={endpoints.getTopRated}
+          />        
         </div>
       </div>
     </div>
