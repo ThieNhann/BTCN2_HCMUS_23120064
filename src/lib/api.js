@@ -62,12 +62,19 @@ export const fetchWithAuth = async (url, options = {}) => {
 
     if (!response.ok) {
       const errorText = await response.text();
+      let errorMessage = `Lỗi API (${response.status})`;
+
       try {
         const errorJson = JSON.parse(errorText);
-        throw new Error(errorJson.message || `API Error ${response.status}`);
+        
+        if (errorJson.message) {
+          errorMessage = errorJson.message;
+        }
       } catch (e) {
-        throw new Error(errorText || `API Error ${response.status}`);
+        errorMessage = errorText;
       }
+
+      throw new Error(errorMessage);
     }
 
     return await response.json();

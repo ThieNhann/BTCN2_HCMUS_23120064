@@ -1,41 +1,47 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { UserPlus } from 'lucide-react';
+import { UserPlus, AlertCircle } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+
+// Định nghĩa Schema
+const registerSchema = z.object({
+  username: z.string().min(3, "Username tối thiểu 3 ký tự"),
+  email: z.string().email("Email không hợp lệ"),
+  password: z.string().min(6, "Mật khẩu tối thiểu 6 ký tự"),
+  phone: z.string().regex(/^[0-9]+$/, "Số điện thoại chỉ được chứa số").min(10, "SĐT tối thiểu 10 số"),
+  dob: z.string().refine((date) => new Date(date).toString() !== 'Invalid Date', "Vui lòng chọn ngày sinh"),
+});
 
 const RegisterPage = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    email: '',
-    phone: '',
-    dob: '' // YYYY-MM-DD
-  });
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { register } = useAuth();
+  const [serverError, setServerError] = useState('');
+  const { register: registerAuth } = useAuth();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(registerSchema),
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setIsLoading(true);
-
-    const result = await register(formData);
+  const onSubmit = async (data) => {
+    setServerError('');
+    const result = await registerAuth(data);
 
     if (result.success) {
       alert("Đăng ký thành công! Vui lòng đăng nhập.");
       navigate('/login');
     } else {
-      setError(result.message);
+      setServerError(result.message);
     }
-    setIsLoading(false);
   };
+
+  // Helper class cho input để đỡ lặp code
+  const inputClass = (error) => `w-full bg-gray-900 border ${error ? 'border-red-500' : 'border-gray-600'} text-white p-3 rounded-lg focus:outline-none focus:border-blue-500 transition`;
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-10">
@@ -44,46 +50,58 @@ const RegisterPage = () => {
           <UserPlus className="text-blue-500" /> Đăng ký
         </h2>
 
-        {error && (
-          <div className="bg-red-500/20 border border-red-500 text-red-200 p-3 rounded-lg mb-4 text-sm text-center">
-            {error}
+        {serverError && (
+          <div className="bg-red-500/20 border border-red-500 text-red-200 p-3 rounded-lg mb-4 text-sm flex items-center gap-2">
+            <AlertCircle size={16} /> {serverError}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* USERNAME */}
             <div>
               <label className="block text-gray-400 text-sm mb-1">Username</label>
-              <input name="username" type="text" required onChange={handleChange} className="input-dark" />
+              <input {...register("username")} type="text" className={inputClass(errors.username)} />
+              {errors.username && <p className="text-red-400 text-xs mt-1">{errors.username.message}</p>}
             </div>
+
+            {/* EMAIL */}
             <div>
               <label className="block text-gray-400 text-sm mb-1">Email</label>
-              <input name="email" type="email" required onChange={handleChange} className="input-dark" />
+              <input {...register("email")} type="email" className={inputClass(errors.email)} />
+              {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>}
             </div>
           </div>
 
+          {/* PASSWORD */}
           <div>
             <label className="block text-gray-400 text-sm mb-1">Password</label>
-            <input name="password" type="password" required onChange={handleChange} className="input-dark" />
+            <input {...register("password")} type="password" className={inputClass(errors.password)} />
+            {errors.password && <p className="text-red-400 text-xs mt-1">{errors.password.message}</p>}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* PHONE */}
              <div>
               <label className="block text-gray-400 text-sm mb-1">Phone</label>
-              <input name="phone" type="tel" required onChange={handleChange} className="input-dark" />
+              <input {...register("phone")} type="tel" className={inputClass(errors.phone)} />
+              {errors.phone && <p className="text-red-400 text-xs mt-1">{errors.phone.message}</p>}
             </div>
+
+            {/* DOB */}
             <div>
               <label className="block text-gray-400 text-sm mb-1">Date of Birth</label>
-              <input name="dob" type="date" required onChange={handleChange} className="input-dark" />
+              <input {...register("dob")} type="date" className={inputClass(errors.dob)} />
+              {errors.dob && <p className="text-red-400 text-xs mt-1">{errors.dob.message}</p>}
             </div>
           </div>
 
           <button 
             type="submit" 
-            disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition mt-4 disabled:opacity-50"
+            disabled={isSubmitting}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Đang tạo tài khoản...' : 'Đăng ký'}
+            {isSubmitting ? 'Đang tạo tài khoản...' : 'Đăng ký'}
           </button>
         </form>
 
@@ -94,23 +112,6 @@ const RegisterPage = () => {
           </Link>
         </p>
       </div>
-      
-      {/* Helper style */}
-      <style>{`
-        .input-dark {
-          width: 100%;
-          background-color: #111827;
-          border: 1px solid #4b5563;
-          color: white;
-          padding: 0.75rem;
-          border-radius: 0.5rem;
-          outline: none;
-          transition: border-color 0.2s;
-        }
-        .input-dark:focus {
-          border-color: #3b82f6;
-        }
-      `}</style>
     </div>
   );
 };
