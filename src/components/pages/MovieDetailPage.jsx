@@ -96,7 +96,7 @@ const MovieDetailPage = () => {
   );
 
   return (
-    <div className="min-h-screen rounded-2xl text-gray-100 pb-20 font-sans bg-gray-400 dark:bg-gray-600">
+    <div className="min-h-screen rounded-sm border-2 border-black dark:border-gray-200 text-gray-100 pb-20 font-sans bg-gray-400 dark:bg-gray-600">
       <div className="container mx-auto px-4 py-6">
         <button 
           onClick={() => navigate(-1)}
