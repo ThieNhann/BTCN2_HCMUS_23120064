@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { endpoints, fetchWithAuth } from '@/lib/api';
+import { useNavigate } from 'react-router-dom';
 
 export function Banner() {
+  const navigate = useNavigate();
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -44,6 +46,12 @@ export function Banner() {
 
   const movie = movies[currentIndex];
 
+  const handleBannerClick = () => {
+    if (movie && movie.id) {
+      navigate(`/movie/${movie.id}`);
+    }
+  };
+
   return (
     <div className="w-full flex flex-col items-center py-3 bg-transparent">
       <div className="relative w-full max-w-3xl flex items-center justify-center">
@@ -55,7 +63,7 @@ export function Banner() {
           <ChevronLeft className="w-8 h-8 md:w-10 md:h-10 text-gray-800 dark:text-white" />
         </button>
 
-        <div className="relative group perspective-1000 cursor-pointer"> 
+        <div onClick={handleBannerClick} className="relative group perspective-1000 cursor-pointer"> 
           <img 
             src={movie.image} 
             alt={movie.title}

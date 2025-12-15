@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { fetchWithAuth } from '@/lib/api';
+import { useNavigate } from 'react-router-dom';
 
 export function Carousel({ title, fetchUrl }) {
+  const navigate = useNavigate();
   const [movies, setMovies] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -42,6 +44,10 @@ export function Carousel({ title, fetchUrl }) {
 
   const navButtonClass = "absolute top-1/2 -translate-y-1/2 z-30 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-all disabled:opacity-0 backdrop-blur-sm";
 
+  const handleMovieClick = (movieId) => {
+    navigate(`/movie/${movieId}`);
+  };
+
   return (
     <div className="w-full py-8 group/container relative">
       <div className="mb-4 px-1">
@@ -75,6 +81,7 @@ export function Carousel({ title, fetchUrl }) {
               style={{ 
                  transformOrigin: index === 0 ? 'left center' : (index === ITEMS_VISIBLE - 1 ? 'right center' : 'center center') 
               }}
+              onClick={() => handleMovieClick(movie.id)}
             >
               <div className="aspect-[2/3] rounded-lg shadow-lg bg-gray-100 relative overflow-hidden">
                 <img 
