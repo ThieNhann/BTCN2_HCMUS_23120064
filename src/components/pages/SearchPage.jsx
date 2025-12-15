@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { fetchWithAuth, getSearchUrl } from '@/lib/api';
-import { Frown, ImageOff } from 'lucide-react'; // Thêm icon ImageOff
+import { Frown, ImageOff, User } from 'lucide-react'; 
 
 const MoviePoster = ({ src, alt }) => {
   const [error, setError] = useState(false);
-
   const isValidUrl = src && src !== "string" && src.startsWith("http");
 
   if (!isValidUrl || error) {
@@ -22,28 +21,35 @@ const MoviePoster = ({ src, alt }) => {
       src={src}
       alt={alt}
       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-      onError={() => setError(true)} // Khi lỗi, set state -> component sẽ re-render ra cái div ở trên
+      onError={() => setError(true)} 
     />
   );
 };
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
-  const query = searchParams.get('q');
   const navigate = useNavigate();
+
+  const q = searchParams.get('q');
+  const person = searchParams.get('person');
+  
+  const keyword = person || q; 
+  const searchType = person ? 'person' : 'q';
 
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   
   useEffect(() => {
     const doSearch = async () => {
-      if (!query) {
+      if (!keyword) {
         setMovies([]);
         return;
       }
       try {
         setLoading(true);
-        const url = getSearchUrl(query);
+        
+        const url = getSearchUrl(keyword, searchType);
+        
         
         const response = await fetchWithAuth(url);
         setMovies(response.data || []); 
@@ -55,19 +61,21 @@ const SearchPage = () => {
     };
 
     doSearch();
-  }, [query]);
+  }, [keyword, searchType]);
 
   const handleMovieClick = (id) => {
     navigate(`/movie/${id}`);
   };
 
   return (
-    <div className="min-h-screen pt-8 pb-10 px-4 md:px-8 ">
+    <div className="min-h-screen pt-8 pb-10 px-4 md:px-8 bg-gray-50 dark:bg-gray-900">
       
-      {query && (
-        <div className="mb-6 max-w-5xl mx-auto">
+      {keyword && (
+        <div className="mb-6 max-w-5xl mx-auto flex items-center gap-2">
+           {searchType === 'person' ? <User className="text-blue-500" /> : <Frown className="hidden" />} 
+           
            <h1 className="text-xl text-gray-600 dark:text-gray-300">
-             Kết quả tìm kiếm cho: <span className="font-bold text-black dark:text-white">"{query}"</span>
+             Kết quả {searchType === 'person' ? 'cho nghệ sĩ' : 'tìm kiếm'}: <span className="font-bold text-black dark:text-white">"{keyword}"</span>
            </h1>
         </div>
       )}
@@ -80,10 +88,10 @@ const SearchPage = () => {
          </div>
       )}
 
-      {!loading && movies.length === 0 && query && (
+      {!loading && movies.length === 0 && keyword && (
         <div className="flex flex-col items-center justify-center py-20 text-gray-500">
           <Frown size={64} className="mb-4" />
-          <p className="text-xl font-medium">Không tìm thấy phim nào.</p>
+          <p className="text-xl font-medium">Không tìm thấy phim nào {searchType === 'person' ? 'có sự tham gia của người này' : ''}.</p>
         </div>
       )}
 
