@@ -55,7 +55,7 @@ export function Banner() {
           <ChevronLeft className="w-8 h-8 md:w-10 md:h-10 text-gray-800 dark:text-white" />
         </button>
 
-        <div className="relative group perspective-1000"> 
+        <div className="relative group perspective-1000 cursor-pointer"> 
           <img 
             src={movie.image} 
             alt={movie.title}
