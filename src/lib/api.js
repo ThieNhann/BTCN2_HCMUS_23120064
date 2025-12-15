@@ -8,8 +8,9 @@ if (!API_CONFIG.TOKEN) {
 }
 
 export const endpoints = {
-  getPopularMovies: `${API_CONFIG.BASE_URL}/movies/most-popular?page=1&limit=5`,
+  getFivePopularMovies: `${API_CONFIG.BASE_URL}/movies/most-popular?page=1&limit=5`,
 };
+
 
 export const fetchWithAuth = async (url) => {
   try {

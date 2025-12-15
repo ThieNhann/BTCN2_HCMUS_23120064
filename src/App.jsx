@@ -2,8 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Layout } from './layouts/Layout';
 import { ThemeProvider } from './context/ThemeContext';
-
-const HomePage = () => <div className="text-center text-xl p-10">NỘI DUNG PHIM</div>;
+import HomePage from './HomePage';
 
 export default function App() {
   return (
@@ -12,7 +11,6 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} /> 
-
             <Route path="*" element={<div className="text-center p-10">404 - Trang không tồn tại</div>} />
           </Route>
         </Routes>
