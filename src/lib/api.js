@@ -26,6 +26,8 @@ export const getSearchUrl = (query, page = 1) => {
   return `${endpoints.search}?${params.toString()}`;
 };
 
+export const getPersonDetailUrl = (id) => `${API_CONFIG.BASE_URL}/persons/${id}`;
+
 export const fetchWithAuth = async (url) => {
   try {
     const response = await fetch(url, {
