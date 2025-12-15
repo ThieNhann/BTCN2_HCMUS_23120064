@@ -11,6 +11,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} /> 
+            <Route path="/movie/:id" element={<MovieDetailPage />} />
             <Route path="*" element={<div className="text-center p-10">404 - Trang không tồn tại</div>} />
           </Route>
         </Routes>
