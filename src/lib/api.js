@@ -10,10 +10,21 @@ if (!API_CONFIG.TOKEN) {
 export const endpoints = {
   getFivePopularMovies: `${API_CONFIG.BASE_URL}/movies/most-popular?page=1&limit=5`,
   getPopularMovies: `${API_CONFIG.BASE_URL}/movies/most-popular?page=1&limit=20`,
-  getTopRated: `${API_CONFIG.BASE_URL}/movies/top-rated?page=1&limit=20`, // Dự phòng cho section 2
+  getTopRated: `${API_CONFIG.BASE_URL}/movies/top-rated?page=1&limit=20`,
+  search: `${API_CONFIG.BASE_URL}/movies/search`,
 };
 
 export const getMovieDetailUrl = (id) => `${API_CONFIG.BASE_URL}/movies/${id}`;
+
+export const getSearchUrl = (query, page = 1) => {
+  const params = new URLSearchParams({
+    q: query,
+    page: page.toString(),
+    limit: '20' // Lấy 20 kết quả/trang
+  });
+  
+  return `${endpoints.search}?${params.toString()}`;
+};
 
 export const fetchWithAuth = async (url) => {
   try {
