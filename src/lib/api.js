@@ -13,6 +13,7 @@ export const endpoints = {
   getTopRated: `${API_CONFIG.BASE_URL}/movies/top-rated?page=1&limit=20`, // Dự phòng cho section 2
 };
 
+export const getMovieDetailUrl = (id) => `${API_CONFIG.BASE_URL}/movies/${id}`;
 
 export const fetchWithAuth = async (url) => {
   try {
