@@ -1,12 +1,13 @@
 import React from 'react';
 import { Moon, Sun} from 'lucide-react'; 
 import { Switch } from "@/components/ui/switch";
+import { useTheme } from '@/context/ThemeContext';
 
 export function Header() {
-  const [isDarkMode, setIsDarkMode] = React.useState(false); 
+  const {isDarkMode, toggleTheme} = useTheme();
   
   return (
-    <header className="bg-red-100 border-b border-red-300 p-2 flex justify-between items-center text-red-800">      
+    <header className="bg-red-100 dark:bg-red-900 border border-red-300 dark:border-red-400 p-2 flex justify-between items-center text-red-900 dark:text-red-200">      
       
       <p>23120064</p>
 
@@ -14,7 +15,7 @@ export function Header() {
 
       <div className="flex items-center space-x-2">
         <Switch
-          onClick={() => setIsDarkMode(prev => !prev)}
+          onCheckedChange={toggleTheme}
           aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
         />
         {!isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export function Navigation() {
   return (
-    <nav className="bg-blue-100 border-b border-blue-300 p-2 flex items-center justify-between shadow-md">
+    <nav className="bg-blue-100 dark:bg-blue-900 border border-blue-300 p-2 flex items-center justify-between shadow-md">
       <Button variant="ghost" className="p-2 h-auto text-blue-700 hover:bg-blue-200">
         <Home className="w-5 h-5 mr-2" />
       </Button>
@@ -15,7 +15,7 @@ export function Navigation() {
           <Input 
             type="text" 
             placeholder="Search" 
-            className="h-8 bg-white"
+            className="h-8 bg-white dark:bg-gray-700"
           />
           <Button 
             type="submit" 
