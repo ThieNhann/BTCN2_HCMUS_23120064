@@ -20,7 +20,7 @@ export const getSearchUrl = (query, page = 1) => {
   const params = new URLSearchParams({
     q: query,
     page: page.toString(),
-    limit: '20' // Lấy 20 kết quả/trang
+    limit: '20'
   });
   
   return `${endpoints.search}?${params.toString()}`;
