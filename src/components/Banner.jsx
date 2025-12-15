@@ -74,7 +74,7 @@ export function Banner() {
 
       <div className="mt-6 text-center animate-in fade-in duration-500">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-          {movie.title} <span className="text-black font-bold">({movie.year})</span>
+          {movie.title} <span className="text-black dark:text-white font-bold">({movie.year})</span>
         </h2>
         
         <p className="mt-2 text-gray-600 dark:text-gray-400 text-sm md:text-base font-medium uppercase tracking-wide">

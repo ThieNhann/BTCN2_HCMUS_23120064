@@ -9,6 +9,8 @@ if (!API_CONFIG.TOKEN) {
 
 export const endpoints = {
   getFivePopularMovies: `${API_CONFIG.BASE_URL}/movies/most-popular?page=1&limit=5`,
+  getPopularMovies: `${API_CONFIG.BASE_URL}/movies/most-popular?page=1&limit=20`,
+  getTopRated: `${API_CONFIG.BASE_URL}/movies/top-rated?page=1&limit=20`, // Dự phòng cho section 2
 };
 
 
