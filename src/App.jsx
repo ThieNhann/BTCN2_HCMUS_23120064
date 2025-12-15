@@ -1,5 +1,6 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Layout } from './Layout';
+import { Layout } from './layouts/Layout';
 
 const HomePage = () => <div className="text-center text-xl p-10">NỘI DUNG PHIM</div>;
 
