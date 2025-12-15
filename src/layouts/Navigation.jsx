@@ -19,7 +19,7 @@ export function Navigation() {
           />
           <Button 
             type="submit" 
-            className="h-8 bg-blue-600 hover:bg-blue-700"
+            className="h-8 bg-inherit border border-blue-700 dark:border-blue-400 text-blue-700 dark:text-blue-100"
           >
             Search
           </Button>

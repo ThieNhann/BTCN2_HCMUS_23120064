@@ -7,7 +7,7 @@ export function Header() {
   const {isDarkMode, toggleTheme} = useTheme();
   
   return (
-    <header className="bg-red-100 dark:bg-red-900 border border-red-300 dark:border-red-400 p-2 flex justify-between items-center text-red-900 dark:text-red-200">      
+    <header className="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 p-2 flex justify-between items-center text-red-900 dark:text-red-200">      
       
       <p>23120064</p>
 
