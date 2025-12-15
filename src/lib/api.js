@@ -16,12 +16,17 @@ export const endpoints = {
 
 export const getMovieDetailUrl = (id) => `${API_CONFIG.BASE_URL}/movies/${id}`;
 
-export const getSearchUrl = (query, page = 1) => {
+export const getSearchUrl = (keyword, type = 'q', page = 1) => {
   const params = new URLSearchParams({
-    q: query,
     page: page.toString(),
     limit: '20'
   });
+
+  if (type === 'person') {
+    params.append('person', keyword); // Tìm theo diễn viên/đạo diễn
+  } else {
+    params.append('q', keyword);      // Tìm tổng hợp (mặc định)
+  }
   
   return `${endpoints.search}?${params.toString()}`;
 };
