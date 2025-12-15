@@ -1,6 +1,6 @@
 export const API_CONFIG = {
   BASE_URL: import.meta.env.VITE_API_URL || 'https://34.124.214.214:2423/api',
-  TOKEN: import.meta.env.VITE_APP_TOKEN,
+  DEFAULT_TOKEN: import.meta.env.VITE_APP_TOKEN,
 };
 
 if (!API_CONFIG.TOKEN) {
@@ -12,6 +12,9 @@ export const endpoints = {
   getPopularMovies: `${API_CONFIG.BASE_URL}/movies/most-popular?page=1&limit=20`,
   getTopRated: `${API_CONFIG.BASE_URL}/movies/top-rated?page=1&limit=20`,
   search: `${API_CONFIG.BASE_URL}/movies/search`,
+  login: `${API_CONFIG.BASE_URL}/users/login`,
+  register: `${API_CONFIG.BASE_URL}/users/register`,
+  logout: `${API_CONFIG.BASE_URL}/users/logout`,
 };
 
 export const getMovieDetailUrl = (id) => `${API_CONFIG.BASE_URL}/movies/${id}`;
@@ -33,19 +36,42 @@ export const getSearchUrl = (keyword, type = 'q', page = 1) => {
 
 export const getPersonDetailUrl = (id) => `${API_CONFIG.BASE_URL}/persons/${id}`;
 
-export const fetchWithAuth = async (url) => {
+export const fetchWithAuth = async (url, options = {}) => {
+  // Lấy token của người dùng từ LocalStorage
+  const userToken = localStorage.getItem('accessToken');
+  
+  // Quyết định dùng token nào: Ưu tiên User Token > Default Token
+  const tokenToUse = userToken || API_CONFIG.DEFAULT_TOKEN;
+
+  const defaultHeaders = {
+    'Content-Type': 'application/json',
+    'x-app-token': tokenToUse,
+  };
+
+  const config = {
+    ...options,
+    headers: {
+      ...defaultHeaders,
+      ...options.headers,
+    },
+  };
+
   try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-app-token': API_CONFIG.TOKEN, 
-      },
-    });
+    const response = await fetch(url, config);
+
+    // 401 (Unauthorized) -> Token hết hạn
+    if (response.status === 401) {
+      console.warn("Token expired or invalid");
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`API Error ${response.status}: ${errorText}`);
+      try {
+        const errorJson = JSON.parse(errorText);
+        throw new Error(errorJson.message || `API Error ${response.status}`);
+      } catch (e) {
+        throw new Error(errorText || `API Error ${response.status}`);
+      }
     }
 
     return await response.json();
