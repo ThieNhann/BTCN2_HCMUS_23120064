@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Star, Clock, Calendar, Play } from 'lucide-react';
 import { fetchWithAuth, getMovieDetailUrl } from '@/lib/api';
 
@@ -177,7 +177,17 @@ const MovieDetailPage = () => {
                <div className="p-4 bg-gray-700 rounded-xl border border-gray-700">
                   <span className="text-gray-400 text-xs uppercase tracking-wider block mb-1">Đạo diễn</span>
                   <div className="font-semibold text-white truncate">
-                    {movie.directors?.map(d => d.name).join(', ') || 'N/A'}
+                    {movie.directors?.map((d, index) => (
+                      <span key={d.id}>
+                        {index > 0 && ", "}
+                        <Link 
+                          to={`/person/${d.id}`} 
+                          className="hover:text-red-500 hover:underline transition-colors"
+                        >
+                          {d.name}
+                        </Link>
+                      </span>
+                    )) || 'N/A'}
                   </div>
                </div>
                <div className="p-4 bg-gray-700 rounded-xl border border-gray-700">
@@ -199,22 +209,28 @@ const MovieDetailPage = () => {
               
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 {movie.actors?.slice(0, 8).map(actor => (
-                  <div key={actor.id} className="flex items-center gap-3 bg-gray-700 p-3 rounded-xl border border-gray-700 hover:border-gray-500 transition group cursor-default">
-                    <img 
-                      src={actor.image} 
-                      className="w-12 h-12 rounded-full object-cover border border-gray-600 group-hover:border-white transition"
-                      alt={actor.name}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = FALLBACK_AVATAR;
-                      }}
-                    />
-                    <div className="overflow-hidden">
-                      <div className="font-semibold text-white text-sm truncate">{actor.name}</div>
-                      <div className="text-xs text-gray-400 truncate">{actor.character || "Actor"}</div>
+                <Link 
+                  to={`/person/${actor.id}`}
+                  key={actor.id} 
+                  className="flex items-center gap-3 bg-gray-800 p-3 rounded-xl border border-gray-700 hover:border-white transition group"
+                >
+                <img 
+                  src={actor.image} 
+                  className="w-12 h-12 rounded-full object-cover border border-gray-600 group-hover:border-white transition"
+                  alt={actor.name}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = FALLBACK_AVATAR;
+                  }}
+                />
+                  <div className="overflow-hidden">
+                    <div className="font-semibold text-white text-sm truncate group-hover:text-red-400 transition">
+                      {actor.name}
                     </div>
+                    <div className="text-xs text-gray-400 truncate">{actor.character || "Actor"}</div>
                   </div>
-                ))}
+                </Link>
+              ))}
               </div>
               {(!movie.actors || movie.actors.length === 0) && (
                  <p className="text-gray-500 italic">Chưa có thông tin diễn viên.</p>
